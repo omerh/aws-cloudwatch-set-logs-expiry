@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -9,8 +10,13 @@ import (
 )
 
 func main() {
+	region := "us-east-1"
+	awsRegion, ok := os.LookupEnv("AWS_REGION")
+	if ok {
+		region = awsRegion
+	}
 	awsSession := session.Must(session.NewSessionWithOptions(session.Options{
-		Config: aws.Config{Region: aws.String("us-east-1")},
+		Config: aws.Config{Region: aws.String(region)},
 		// Profile: "profile_name",
 	}))
 	svc := cloudwatchlogs.New(awsSession)
